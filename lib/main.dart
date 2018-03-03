@@ -1,6 +1,24 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'l10n/Strings.dart';
 
 void main() => runApp(new MyApp());
+
+class _MyLocalizationsDelegate extends LocalizationsDelegate<Strings> {
+  const _MyLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) => ['en', 'ja'].contains(locale.languageCode);
+
+  @override
+  Future<Strings> load(Locale locale) => Strings.load(locale);
+
+  @override
+  bool shouldReload(_MyLocalizationsDelegate old) => false;
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -19,6 +37,15 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
+      localizationsDelegates: [
+        const _MyLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('ja', ''),
+      ],
       home: new MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -68,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: new Text(widget.title),
+        title: new Text(Strings.of(context).title),
       ),
       body: new Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -90,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Text(
-              'You have pushed the button this many times:',
+              Strings.of(context).message,
             ),
             new Text(
               '$_counter',
@@ -107,3 +134,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
